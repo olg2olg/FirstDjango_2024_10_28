@@ -3,14 +3,6 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-autor = {
-    "Имя": "Иван",
-    "Отчество": "Петрович",
-    "Фамилия": "Иванов",
-    "телефон": "8-923-600-01-02",
-    "email": "vasya@mail.ru"
-}
-
 items = [
    {"id": 1, "name": "Кроссовки abibas" ,"quantity":5},
    {"id": 2, "name": "Куртка кожаная" ,"quantity":2},
@@ -40,14 +32,23 @@ def home(request):
     return render(request, "index.html", context)
 
 def about(request):
-    text = f"""
-    Имя: <b>{autor["Имя"]}</b><br>
-    Отчество: <b>{autor["Отчество"]}</b><br>
-    Фамилия: <b>{autor["Фамилия"]}</b><br>
-    телефон: <b>{autor["телефон"]}</b><br>
-    email: <b>{autor["email"]}</b><br>
-    """
-    return HttpResponse(text)
+    author = {
+    "name": "Иван",
+    "middle_name": "Петрович",
+    "last_name": "Иванов",
+    "phone": "8-923-600-01-02",
+    "email": "vasya@mail.ru"
+    }
+    # text = f"""
+    # Имя: <b>{autor["Имя"]}</b><br>
+    # Отчество: <b>{autor["Отчество"]}</b><br>
+    # Фамилия: <b>{autor["Фамилия"]}</b><br>
+    # телефон: <b>{autor["телефон"]}</b><br>
+    # email: <b>{autor["email"]}</b><br>
+    # """
+    # return HttpResponse(text)
+
+    return render(request, "about.html", {"author": author})
 
 
 def item(request, item_id):

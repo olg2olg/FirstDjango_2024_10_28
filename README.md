@@ -22,4 +22,5 @@ ext install batisteo.vscode-django
 ## ----------------------------------------
 ## я сама дописала:
 http://127.0.0.1:8000/
-https://github.com/olg2olg/FirstDjango_20241028
+
+https://github.com/olg2olg/FirstDjango_2024_10_28
