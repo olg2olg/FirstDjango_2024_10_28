@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 
 # Create your views here.
 
@@ -51,24 +51,30 @@ def about(request):
     return render(request, "about.html", {"author": author})
 
 
-def item(request, item_id):
-    """ По указанному id возвращаем имя элемента"""
-    find = False
-    for it in items:
-        if it['id'] == item_id:
-            find = True
-            name = it['name']
-            quantity = it['quantity']
-    if find:
-        #text = str(n)
-        text = f'<strong>Название: </strong> <i>{name}</i><br>'
-        text += f'<strong>Количество: </strong> <i>{quantity}</i>'
-        text += f'<p><a href="/items">Назад к списку товаров</a></p>'
-    else:
-        text = f'Товар с id={item_id} не найден'
-        #HttpResponseNotFound
-    return HttpResponse(text)
-
+def get_item(request, item_id:int):
+    # """ По указанному id возвращаем имя элемента"""
+    # find = False
+    # for it in items:
+    #     if it['id'] == item_id:
+    #         find = True
+    #         name = it['name']
+    #         quantity = it['quantity']
+    # if find:
+    #     #text = str(n)
+    #     text = f'<strong>Название: </strong> <i>{name}</i><br>'
+    #     text += f'<strong>Количество: </strong> <i>{quantity}</i>'
+    #     text += f'<p><a href="/items">Назад к списку товаров</a></p>'
+    # else:
+    #     text = f'Товар с id={item_id} не найден'
+    #     #HttpResponseNotFound
+    # return HttpResponse(text)
+    item = next((item for item in items if item['id'] == item_id), None)
+    if item is not None:
+        context = {
+            "item": item
+        }
+        return render(request, "item_page.html", context)
+    return HttpResponseNotFound(f'Товар с id={item_id} не найден')
 
 def items_list(request):
     # text = '<ol>'
