@@ -1,15 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
+from MainApp.models import Item
 
 # Create your views here.
 
-items = [
-   {"id": 1, "name": "Кроссовки abibas" ,"quantity":5},
-   {"id": 2, "name": "Куртка кожаная" ,"quantity":2},
-   {"id": 5, "name": "Coca-cola 1 литр" ,"quantity":12},
-   {"id": 7, "name": "Картофель фри" ,"quantity":0},
-   {"id": 8, "name": "Кепка" ,"quantity":124},
-]
+# items = [
+#    {"id": 1, "name": "Кроссовки abibas" ,"quantity":5},
+#    {"id": 2, "name": "Куртка кожаная" ,"quantity":2},
+#    {"id": 5, "name": "Coca-cola 1 литр" ,"quantity":12},
+#    {"id": 7, "name": "Картофель фри" ,"quantity":0},
+#    {"id": 8, "name": "Кепка" ,"quantity":124},
+# ]
 
 def home(request):
     # print(f'{vars(request)=}')
@@ -68,13 +69,24 @@ def get_item(request, item_id:int):
     #     text = f'Товар с id={item_id} не найден'
     #     #HttpResponseNotFound
     # return HttpResponse(text)
-    item = next((item for item in items if item['id'] == item_id), None)
+
+    # item = next((item for item in items if item['id'] == item_id), None)
+    # if item is not None:
+    #     context = {
+    #         "item": item
+    #     }
+    #     return render(request, "item_page.html", context)
+    # return HttpResponseNotFound(f'Товар с id={item_id} не найден')
+
+    item = Item.objects.filter(pk=item_id)
     if item is not None:
+        item = Item.objects.get(pk=item_id)
         context = {
             "item": item
         }
         return render(request, "item_page.html", context)
     return HttpResponseNotFound(f'Товар с id={item_id} не найден')
+
 
 def items_list(request):
     # text = '<ol>'
@@ -86,7 +98,14 @@ def items_list(request):
     # text += '</ol>'  
     # return HttpResponse(text)
 
+    # context = {
+    #     "items": items
+    # }
+    # return render(request, "items_list.html", context)
+
+    items = Item.objects.all()
     context = {
-        "items": items
+        'items': items
     }
     return render(request, "items_list.html", context)
+
